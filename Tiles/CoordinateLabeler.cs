@@ -6,12 +6,17 @@ using TMPro;
 [ExecuteAlways] //executes in both editmode and in game mode
 public class CoordinateLabeler : MonoBehaviour
 {
+    [SerializeField] Color defaultColor = Color.white;
+    [SerializeField] Color blockedColor = Color.gray;
     TextMeshPro label;
     Vector2Int coordinates = new Vector2Int();
+    Waypoint waypoint;
 
     void Awake() 
     {
         label = GetComponent<TextMeshPro>();
+        label.enabled = false; //to turn off visibility in game mode and enable with C only when needed
+        waypoint = GetComponentInParent<Waypoint>(); //as it is a sibling to this
         DisplayCoordinates(); //updates only on Awake i.e only once when the game is started
     }
 
@@ -21,6 +26,30 @@ public class CoordinateLabeler : MonoBehaviour
         {
             DisplayCoordinates();
             UpdateObjectName();
+            label.enabled = true;
+        }
+
+        ColorCoordinates();
+        ToggleLabels();
+    }
+
+    void ToggleLabels()
+    {
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            label.enabled = !label.IsActive();
+        }
+    }
+
+    void ColorCoordinates()
+    {
+        if(waypoint.IsPlaceable)
+        {
+            label.color = defaultColor;
+        }
+        else
+        {
+            label.color = blockedColor;
         }
     }
 

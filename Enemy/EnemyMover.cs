@@ -9,8 +9,27 @@ public class EnemyMover : MonoBehaviour
 
     void Start()
     {
-        // coroutines are called differntly
-        StartCoroutine(FollowPath());
+        FindPath(); //findiong path before starting coroutine
+        ReturnToStart();
+        StartCoroutine(FollowPath());// coroutines are called differntly
+    }
+
+    void FindPath()
+    {
+        path.Clear();
+        GameObject[] waypoints = GameObject.FindGameObjectsWithTag("Path");
+
+        // Not an ideal method as the path order may not be correct
+        foreach(GameObject waypoint in waypoints)
+        {
+            path.Add(waypoint.GetComponent<Waypoint>());
+        }
+    }
+
+    void ReturnToStart()
+    {
+        // to start the position of the RAM from the starting path coordinate instead of (0, 0)
+        transform.position = path[0].transform.position;
     }
 
     IEnumerator FollowPath() //coroutine
@@ -30,6 +49,8 @@ public class EnemyMover : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
         }
+
+        Destroy(gameObject); //destroying the gameObject at the end of the path
     }
 }
 
