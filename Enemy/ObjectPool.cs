@@ -22,20 +22,37 @@ public class ObjectPool : MonoBehaviour
     void PopulatePool()
     {
         pool = new GameObject[poolSize];
-        
+
+        for(int i = 0; i < poolSize; i++)
+        {
+            pool[i] = Instantiate(enemyPrefab, transform);
+            pool[i].SetActive(false);
+        }
+    }
+
+    void EnableObjectInPool()
+    {
+        for(int i = 0; i < poolSize; i++)
+        {
+            if(pool[i].activeInHierarchy == false)
+            {
+                pool[i].SetActive(true);
+                return;
+            }
+        }
     }
 
     IEnumerator SpawnEnemy()
     {
         while(true)
         {
-            Instantiate(enemyPrefab, transform);
+            EnableObjectInPool();
             yield return new WaitForSeconds(spawnTime);
         }
     }
 }
 
 // to see overloads Shift + Ctrl + Space
-// here for Instantiate in SpawnEnemy using the Overload
+// here for Instantiate in PopulatePool using the Overload
 // Object Object.Instantiate(Object original, Transform parent)
 

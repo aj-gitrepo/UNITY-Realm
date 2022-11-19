@@ -7,9 +7,9 @@ public class EnemyMover : MonoBehaviour
     [SerializeField] List<Waypoint> path = new List<Waypoint>();
     [SerializeField] [Range(0f, 5f)] float speed = 1f;
 
-    void Start()
+    void OnEnable() //runs after Awake before Start
     {
-        FindPath(); //findiong path before starting coroutine
+        FindPath(); //finding path before starting coroutine
         ReturnToStart();
         StartCoroutine(FollowPath());// coroutines are called differntly
     }
@@ -50,7 +50,7 @@ public class EnemyMover : MonoBehaviour
             }
         }
 
-        Destroy(gameObject); //destroying the gameObject at the end of the path
+        gameObject.SetActive(false); //instead of destroying the gameObject at the end of the path
     }
 }
 
