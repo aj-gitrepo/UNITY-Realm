@@ -7,7 +7,7 @@ using TMPro;
 public class Bank : MonoBehaviour
 {
     [SerializeField] int startingBalance = 150;
-    [SerializeField] int currentBalance;
+    int currentBalance;
     [SerializeField] TextMeshProUGUI displayBlance;
     public int CurrentBalance { get { return currentBalance; } }
 
