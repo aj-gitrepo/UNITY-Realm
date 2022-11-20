@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Enemy))]
 public class EnemyMover : MonoBehaviour
 {
     [SerializeField] List<Waypoint> path = new List<Waypoint>();
@@ -24,12 +25,18 @@ public class EnemyMover : MonoBehaviour
     void FindPath()
     {
         path.Clear();
-        GameObject[] waypoints = GameObject.FindGameObjectsWithTag("Path");
+        GameObject parent = GameObject.FindGameObjectWithTag("Path");
 
-        // Not an ideal method as the path order may not be correct
-        foreach(GameObject waypoint in waypoints)
+        // Now the order of the tiles will be as in the parent Path obj
+        foreach(Transform child in parent.transform)
         {
-            path.Add(waypoint.GetComponent<Waypoint>());
+            
+            Waypoint waypoint = child.GetComponent<Waypoint>();
+            // to make sure only waypoints get added
+            if(waypoint != null)
+            {
+                path.Add(waypoint);
+            }
         }
     }
 
@@ -37,6 +44,12 @@ public class EnemyMover : MonoBehaviour
     {
         // to start the position of the RAM from the starting path coordinate instead of (0, 0)
         transform.position = path[0].transform.position;
+    }
+
+    void FinishPath()
+    {
+        enemy.StealGold();
+        gameObject.SetActive(false); //instead of destroying the gameObject at the end of the path
     }
 
     IEnumerator FollowPath() //coroutine
@@ -56,9 +69,7 @@ public class EnemyMover : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
         }
-        
-        enemy.StealGold();
-        gameObject.SetActive(false); //instead of destroying the gameObject at the end of the path
+        FinishPath();
     }
 }
 
