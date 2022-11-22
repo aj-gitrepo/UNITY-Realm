@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Enemy))]
-public class EnemyMover : MonoBehaviour
+public class EnemyMover2 : MonoBehaviour
 {
     [SerializeField] List<Waypoint> path = new List<Waypoint>();
     [SerializeField] [Range(0f, 5f)] float speed = 1f;
@@ -25,7 +25,7 @@ public class EnemyMover : MonoBehaviour
     void FindPath()
     {
         path.Clear();
-        GameObject parent = GameObject.FindGameObjectWithTag("Path");
+        GameObject parent = GameObject.FindGameObjectWithTag("Path_Two");
 
         // Now the order of the tiles will be as in the parent Path obj
         foreach(Transform child in parent.transform)

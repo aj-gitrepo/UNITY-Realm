@@ -5,8 +5,12 @@ using UnityEngine;
 public class ObjectPool : MonoBehaviour
 {
     [SerializeField] GameObject enemyPrefab;
-    [SerializeField] int poolSize = 5;
-    [SerializeField] float spawnTime = 1f;
+
+    // Negative pool size may break the code
+    [SerializeField] [Range(0, 50)] int poolSize = 5;
+
+    //if this gets negative or becomes 0 it may create prob in SpawnEnemy and so using range
+    [SerializeField] [Range(0.1f, 30f)] float spawnTime = 1f; 
 
     GameObject[] pool;
 

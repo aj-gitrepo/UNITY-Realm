@@ -1,9 +1,11 @@
+#if (UNITY_EDITOR)
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 [ExecuteAlways] //executes in both editmode and in game mode
+[RequireComponent(typeof(TextMeshPro))] //tomake sure TextMeshPro is always attached to this
 public class CoordinateLabeler : MonoBehaviour
 {
     [SerializeField] Color defaultColor = Color.white;
@@ -29,7 +31,7 @@ public class CoordinateLabeler : MonoBehaviour
             label.enabled = true;
         }
 
-        ColorCoordinates();
+        SetLabelColor();
         ToggleLabels();
     }
 
@@ -41,7 +43,7 @@ public class CoordinateLabeler : MonoBehaviour
         }
     }
 
-    void ColorCoordinates()
+    void SetLabelColor()
     {
         if(waypoint.IsPlaceable)
         {
@@ -65,8 +67,11 @@ public class CoordinateLabeler : MonoBehaviour
         transform.parent.name = coordinates.ToString();
     }
 }
+#endif
 
 // Add this script to he text 
 
 // UnityEditor.EditorSnapSettings.move.x - as coordinates are in interms of 10 to convert them in terms of 1
 // as the grid scale is set in terms of 10
+
+// #if (UNITY_EDITOR) and #endif - to avoid error while build
