@@ -11,6 +11,16 @@ public class GridManager : MonoBehaviour
         CreateGrid();
     }
 
+    public Node GetNode(Vector2Int coordinates) //Node - return type here
+    {
+        if(grid.ContainsKey(coordinates)) //to avoid error if the coordinate does not exist
+        {
+            return grid[coordinates];
+        }
+
+        return null;
+    }
+
     void CreateGrid()
     {
         for(int x = 0; x < gridSize.x; x++)
@@ -32,3 +42,5 @@ public class GridManager : MonoBehaviour
 // Now, one thing to note about the grid manager that we're going to create is it's not going to be able to handle nodes at negative numbers. So it's going to start at the coordinates of zero zero and then work positively in the X and Y.
 
 // the way we want our create grid method to work is to start off at all zero zero position and then loop through every single element in our grid and add a new node object for that position.
+
+// to test grid manager enter the grid size in the serialized field and play the game
