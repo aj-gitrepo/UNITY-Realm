@@ -7,6 +7,7 @@ public class EnemyMover : MonoBehaviour
 {
     [SerializeField] List<Waypoint> path = new List<Waypoint>();
     [SerializeField] [Range(0f, 5f)] float speed = 1f;
+    [SerializeField] [Range(0f, 5f)] float rotationSpeed = 5f;
 
     Enemy enemy;
 
@@ -60,12 +61,17 @@ public class EnemyMover : MonoBehaviour
             Vector3 endPosition = waypoint.transform.position;
             float travelPercent = 0f; //travelPercent in Lerp is from 0 to 1
 
-            transform.LookAt(endPosition); // to make the ram rotate according to direction
+            // transform.LookAt(endPosition); // to make the ram rotate according to direction
+
+            Quaternion startRotation = transform.rotation; 
+            Quaternion endRotation = Quaternion.LookRotation(endPosition - startPosition);
 
             while(travelPercent < 1f)
             {
-                travelPercent += Time.deltaTime * speed; //updates every frame
                 transform.position = Vector3.Lerp(startPosition, endPosition, travelPercent);
+                transform.rotation = Quaternion.Lerp(startRotation, endRotation, 
+                    Mathf.Clamp(travelPercent * rotationSpeed, 0, 1));
+                travelPercent += Time.deltaTime * speed; //updates every frame
                 yield return new WaitForEndOfFrame();
             }
         }
