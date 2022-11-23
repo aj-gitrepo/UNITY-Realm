@@ -8,7 +8,7 @@ public class PathFinding : MonoBehaviour
     [SerializeField] Vector2Int DestinationCoordinates;
 
     Node startNode;
-    Node endNode;
+    Node destinationNode;
     Node currentSearchNode;
 
     Vector2Int[] directions = { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
@@ -25,13 +25,14 @@ public class PathFinding : MonoBehaviour
         {
             grid = gridManager.Grid;
         }
-
-        startNode = new Node(StartCoordinates, true);
-        endNode = new Node(DestinationCoordinates, true);
     }
     void Start()
     {
-        BreadthFirstSearh();
+        startNode = grid[StartCoordinates];
+        destinationNode = grid[DestinationCoordinates];
+
+        BreadthFirstSearh(); //explores all the nodes between start and end
+        BuildPath(); //calculates path from destination node
     }
 
     void ExploreNeighbors()
@@ -52,6 +53,7 @@ public class PathFinding : MonoBehaviour
         {
             if(!reached.ContainsKey(neighbor.coordinates) && neighbor.isWalkable)
             {
+                neighbor.connectedTo = currentSearchNode;
                 reached.Add(neighbor.coordinates, neighbor);
                 frontier.Enqueue(neighbor);
             }
@@ -76,6 +78,25 @@ public class PathFinding : MonoBehaviour
             }
         }
 
+    }
+
+    List<Node> BuildPath() //returns list of Nodes
+    {
+        List<Node> path = new List<Node>();
+        Node currentNode = destinationNode;
+
+        path.Add(currentNode);
+        currentNode.isPath = true;
+
+        while(currentNode.connectedTo != null)
+        {
+            currentNode = currentNode.connectedTo;
+            path.Add(currentNode);
+            currentNode.isPath = true;
+        }
+
+        path.Reverse();
+        return path;
     }
 
 }
