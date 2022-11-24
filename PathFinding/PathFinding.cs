@@ -134,6 +134,11 @@ public class PathFinding : MonoBehaviour
         return false; //if it does not block path or if GridManager is not found 
     }
 
+    public void NotifyReceivers()
+    {
+        BroadcastMessage("RecalculatePath", SendMessageOptions.DontRequireReceiver); //to prevent errors if there is no receiver
+    }
+
 }
 
 // Well, for now, we really just want to specify any particular node that exists in our grid and then have it search around for its four neighbors.

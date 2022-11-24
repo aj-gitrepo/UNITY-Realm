@@ -22,17 +22,12 @@ public class EnemyMover : MonoBehaviour
 
     void OnEnable() //runs after Awake before Start
     {
-        FindPath(); //finding path before starting coroutine
+        RecalculatePath(); //finding path before starting coroutine
         ReturnToStart();
         StartCoroutine(FollowPath());// coroutines are called differntly
     }
 
-    void Start() 
-    {
-        
-    }
-
-    void FindPath()
+    void RecalculatePath()
     {
         path.Clear();
         path = pathFinder.GetNewPath();
