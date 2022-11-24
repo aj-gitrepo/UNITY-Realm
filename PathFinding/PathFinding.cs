@@ -30,9 +30,14 @@ public class PathFinding : MonoBehaviour
     {
         startNode = grid[StartCoordinates];
         destinationNode = grid[DestinationCoordinates];
+        GetPath();
+    }
 
+    public List<Node> GetPath()
+    {
+        gridManager.ResetNodes();
         BreadthFirstSearh(); //explores all the nodes between start and end
-        BuildPath(); //calculates path from destination node
+        return BuildPath(); //calculates path from destination node
     }
 
     void ExploreNeighbors()
@@ -62,6 +67,10 @@ public class PathFinding : MonoBehaviour
 
     void BreadthFirstSearh()
     {
+        // to clear for next path finding
+        frontier.Clear();
+        reached.Clear();
+
         bool isRunning = true; //to help in breaking the while loop
 
         frontier.Enqueue(startNode);
@@ -97,6 +106,25 @@ public class PathFinding : MonoBehaviour
 
         path.Reverse();
         return path;
+    }
+
+    public bool WillBlockPath(Vector2Int coordinates)
+    {
+        if(grid.ContainsKey(coordinates))
+        {
+            bool previousState = grid[coordinates].isWalkable;
+
+            grid[coordinates].isWalkable = false;
+            List<Node> newPath = GetPath();
+            grid[coordinates].isWalkable = previousState;
+
+            if(newPath.Count <= 1)
+            {
+                GetPath();
+                return true;
+            }
+        }
+        return false; //if it does not block path or if GridManager is not found 
     }
 
 }
