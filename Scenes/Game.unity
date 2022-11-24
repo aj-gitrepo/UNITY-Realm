@@ -15230,8 +15230,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6458c66f2c180494eb923d4f2a78453b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartCoordinates: {x: 0, y: 0}
-  DestinationCoordinates: {x: 9, y: 6}
+  startCoordinates: {x: 0, y: 0}
+  destinationCoordinates: {x: 9, y: 6}
 --- !u!1 &1402468690
 GameObject:
   m_ObjectHideFlags: 0
@@ -16818,6 +16818,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1085692764}
     m_Modifications:
+    - target: {fileID: 5227968108163104280, guid: 3335f0064bf525f4bba8c5360448bde8, type: 3}
+      propertyPath: isPlaceable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5688614901980545411, guid: 3335f0064bf525f4bba8c5360448bde8, type: 3}
       propertyPath: m_text
       value: 0,0
@@ -18527,7 +18531,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5227968108163104280, guid: 3335f0064bf525f4bba8c5360448bde8, type: 3}
       propertyPath: isPlaceable
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5688614901980545411, guid: 3335f0064bf525f4bba8c5360448bde8, type: 3}
       propertyPath: m_text
@@ -22867,7 +22871,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4196130988690809320, guid: 7436d0a8aa57a6248b04dd70a1a43b2b, type: 3}
       propertyPath: poolSize
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4196130988690809321, guid: 7436d0a8aa57a6248b04dd70a1a43b2b, type: 3}
       propertyPath: m_RootOrder

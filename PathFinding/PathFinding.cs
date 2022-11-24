@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class PathFinding : MonoBehaviour
 {
-    [SerializeField] Vector2Int StartCoordinates;
-    [SerializeField] Vector2Int DestinationCoordinates;
+    [SerializeField] Vector2Int startCoordinates;
+    public Vector2Int StartCoordinates { get { return startCoordinates; } }
+
+    [SerializeField] Vector2Int destinationCoordinates;
+    public Vector2Int DestinationCoordinates { get { return destinationCoordinates; } }
 
     Node startNode;
     Node destinationNode;
@@ -24,16 +27,17 @@ public class PathFinding : MonoBehaviour
         if(gridManager != null)
         {
             grid = gridManager.Grid;
+            startNode = grid[startCoordinates];
+            destinationNode = grid[destinationCoordinates];
         }
     }
     void Start()
     {
-        startNode = grid[StartCoordinates];
-        destinationNode = grid[DestinationCoordinates];
-        GetPath();
+
+        GetNewPath();
     }
 
-    public List<Node> GetPath()
+    public List<Node> GetNewPath()
     {
         gridManager.ResetNodes();
         BreadthFirstSearh(); //explores all the nodes between start and end
@@ -67,6 +71,9 @@ public class PathFinding : MonoBehaviour
 
     void BreadthFirstSearh()
     {
+        // as the start and destination nodes are not isPlaceble isWalkable is set to false in Tile Start()
+        startNode.isWalkable = true;
+        destinationNode.isWalkable = true;
         // to clear for next path finding
         frontier.Clear();
         reached.Clear();
@@ -81,7 +88,7 @@ public class PathFinding : MonoBehaviour
             currentSearchNode = frontier.Dequeue();
             currentSearchNode.isExplored = true;
             ExploreNeighbors();
-            if(currentSearchNode.coordinates == DestinationCoordinates)
+            if(currentSearchNode.coordinates == destinationCoordinates)
             {
                 isRunning = false;
             }
@@ -115,12 +122,12 @@ public class PathFinding : MonoBehaviour
             bool previousState = grid[coordinates].isWalkable;
 
             grid[coordinates].isWalkable = false;
-            List<Node> newPath = GetPath();
+            List<Node> newPath = GetNewPath();
             grid[coordinates].isWalkable = previousState;
 
             if(newPath.Count <= 1)
             {
-                GetPath();
+                GetNewPath();
                 return true;
             }
         }
