@@ -22,15 +22,28 @@ public class EnemyMover : MonoBehaviour
 
     void OnEnable() //runs after Awake before Start
     {
-        RecalculatePath(); //finding path before starting coroutine
-        ReturnToStart();
-        StartCoroutine(FollowPath());// coroutines are called differntly
+        ReturnToStart(); //return to start then calculate the path (when the enemy spawns the 2nd, 3rd time etc)
+        RecalculatePath(true); //finding path before starting coroutine, true - recalculating from startposition
+        
     }
 
-    void RecalculatePath()
+    void RecalculatePath(bool resetPath)
     {
+        Vector2Int coornidates = new Vector2Int();
+
+        if(resetPath)
+        {
+            coornidates = pathFinder.StartCoordinates;
+        }
+        else
+        {
+            coornidates = gridManager.GetCoordinatesFromPosition(transform.position);
+        }
+
+        StopAllCoroutines(); //to stop the current path movement of enemy
         path.Clear();
-        path = pathFinder.GetNewPath();
+        path = pathFinder.GetNewPath(coornidates);
+        StartCoroutine(FollowPath()); // to make sure that coroutine starts after calculating path
     }
 
     void ReturnToStart()
@@ -47,9 +60,9 @@ public class EnemyMover : MonoBehaviour
 
     IEnumerator FollowPath() //coroutine
     {
-        for(int i = 0; i < path.Count; i++)
+        for(int i = 1; i < path.Count; i++)
         {
-            Vector3 startPosition = transform.position;
+            Vector3 startPosition = transform.position; //now this will be i=0
             Vector3 endPosition = gridManager.GetPositionFromCoordinates(path[i].coordinates); //from next node
             float travelPercent = 0f; //travelPercent in Lerp is from 0 to 1
 

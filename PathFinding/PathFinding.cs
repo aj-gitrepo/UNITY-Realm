@@ -39,10 +39,16 @@ public class PathFinding : MonoBehaviour
 
     public List<Node> GetNewPath()
     {
-        gridManager.ResetNodes();
-        BreadthFirstSearh(); //explores all the nodes between start and end
-        return BuildPath(); //calculates path from destination node
+        return GetNewPath(startCoordinates);
     }
+
+    // overloaded method
+    public List<Node> GetNewPath(Vector2Int coordinates)
+    {
+        gridManager.ResetNodes();
+        BreadthFirstSearh(coordinates); //takes the current position of enemy
+        return BuildPath(); //calculates path from destination node
+    }   
 
     void ExploreNeighbors()
     {
@@ -69,7 +75,7 @@ public class PathFinding : MonoBehaviour
         }
     }
 
-    void BreadthFirstSearh()
+    void BreadthFirstSearh(Vector2Int startCoordinates)
     {
         // as the start and destination nodes are not isPlaceble isWalkable is set to false in Tile Start()
         startNode.isWalkable = true;
@@ -80,8 +86,8 @@ public class PathFinding : MonoBehaviour
 
         bool isRunning = true; //to help in breaking the while loop
 
-        frontier.Enqueue(startNode);
-        reached.Add(startNode.coordinates, startNode);
+        frontier.Enqueue(grid[startCoordinates]);
+        reached.Add(startCoordinates, grid[startCoordinates]);
 
         while(frontier.Count > 0 && isRunning)
         {
@@ -136,7 +142,7 @@ public class PathFinding : MonoBehaviour
 
     public void NotifyReceivers()
     {
-        BroadcastMessage("RecalculatePath", SendMessageOptions.DontRequireReceiver); //to prevent errors if there is no receiver
+        BroadcastMessage("RecalculatePath", false, SendMessageOptions.DontRequireReceiver); //to prevent errors if there is no receiver
     }
 
 }
